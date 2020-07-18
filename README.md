@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://i.imgur.com/6z2UKST.png" width="150" />
   <h1 align="center" style="font-size: 48px;">Shortcut Commander</h1>
-  <h5 align="center">Setup shortcuts for your app easily.</h5>
+  <h5 align="center">Setup shortcuts for your react app easily.</h5>
   <div style="display: flex; width: 100%; justify-content: center;">
     <a style="margin-right: 10px;" href="https://www.npmjs.com/package/button-commander">
     <img src="https://img.shields.io/npm/v/shortcut-commander.svg" />

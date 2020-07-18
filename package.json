@@ -1,7 +1,7 @@
 {
   "name": "shortcut-commander",
   "version": "1.0.0",
-  "description": "Command your keys to perform actions/ tasks for you.",
+  "description": "Setup shortcuts for your react app easily.",
   "author": "fayeed",
   "license": "MIT",
   "repository": "fayeed/button-commander",
