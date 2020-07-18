@@ -1,4 +1,9 @@
-import { Command, Option, UpdateCommand } from "./types";
+import {
+  Command,
+  Option,
+  UpdateCommand,
+  ButtonCommanderReturnType,
+} from "./types";
 import { useEffect, MutableRefObject, useState } from "react";
 import { matchCommand, getShortcut } from "./utils";
 
@@ -89,7 +94,7 @@ export const useCommander = (
   ref?: MutableRefObject<any>,
   commands?: Command[],
   option?: Option
-) => {
+): ButtonCommanderReturnType => {
   const [command, setCommand] = useState<Command>();
 
   useEffect(() => {
@@ -180,11 +185,13 @@ export const useCommander = (
     }
   };
 
-  const once = (command: Command) =>
+  const once = (command: Command) => {
     commandSet.set(command.name, { ...command, once: true });
+  };
 
-  const longPress = (command: Command) =>
+  const longPress = (command: Command) => {
     commandSet.set(command.name, { ...command, longPress: true });
+  };
 
   return {
     getAll,

@@ -11,6 +11,9 @@ export function matchCommand(e: KeyboardEvent, command: string[]) {
     } else if (key === "alt") {
       if (e.altKey) matched = true;
       else return false;
+    } else if (key === "shift") {
+      if (e.shiftKey) matched = true;
+      else return false;
     } else if (key === "space") {
       if (e.key === " ") matched = true;
       else return false;

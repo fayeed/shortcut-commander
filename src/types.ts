@@ -1,56 +1,48 @@
-import { MutableRefObject } from "react";
-
-export interface ButtonCommanderProps {
-  ref?: MutableRefObject<any>;
-  commands?: Array<Command>;
-  option?: Option;
-}
-
 export interface ButtonCommanderReturnType {
-  add: () => void; // done
-  clear: (name: string) => void; // done
-  clearAll: () => void; // done
-  update: (name: string, options: UpdateCommand) => void; // done
-  stop: (name: string) => void; // done
-  start: (name: string) => void; // done
-  once: () => void; // done
-  longPress: () => void; // done
-  getAll: () => Array<Command>; // done
-  command: Command; // done
+  add: (command: Command) => void;
+  remove: (name: string) => void;
+  clearAll: () => void;
+  update: (name: string, options: UpdateCommand) => void;
+  stop: (name: string) => void;
+  start: (name: string) => void;
+  once: (command: Command) => void;
+  longPress: (command: Command) => void;
+  getAll: () => Array<Command>;
+  command?: string[];
 }
 
 export interface Command extends Option {
-  name: string; // done
-  shortcut: string[] | OsShortcuts; // done
-  callback: (event: Event) => void; // done
-  description?: string; // done
-  registerTime?: Date; // done
-  stopped?: boolean; // done
+  name: string;
+  shortcut: string[] | OsShortcuts;
+  callback: (event: Event) => void;
+  description?: string;
+  registerTime?: Date;
+  stopped?: boolean;
   delay?: number;
-  ref?: HTMLElement; // done
+  ref?: HTMLElement;
   scopedTo?: string;
 }
 
 export interface UpdateCommand extends Option {
-  shortcut?: string[] | OsShortcuts; // done
-  callback?: (event: Event) => void; // done
-  description?: string; // done
-  registerTime?: Date; // done
-  stopped?: boolean; // done
-  delay?: number; // done
+  shortcut?: string[] | OsShortcuts;
+  callback?: (event: Event) => void;
+  description?: string;
+  registerTime?: Date;
+  stopped?: boolean;
+  delay?: number;
 }
 
 export type OsShortcuts = { windows: string[]; macOS: string[] };
 
 export interface Option {
-  global?: boolean; // done
+  global?: boolean;
   persist?: boolean;
   system?: boolean;
-  readOnly?: boolean; // done
-  once?: boolean; // done
-  longPress?: boolean; // done
+  readOnly?: boolean;
+  once?: boolean;
+  longPress?: boolean;
   onRelease?: boolean;
-  dontRepeat?: boolean; // done
-  stopBubblingUp?: boolean; // done
-  longPressWaitTime?: number; // done
+  dontRepeat?: boolean;
+  stopBubblingUp?: boolean;
+  longPressWaitTime?: number;
 }
