@@ -1,6 +1,6 @@
 {
-  "short_name": "button-commander",
-  "name": "button-commander",
+  "short_name": "shortcut-commander",
+  "name": "shortcut-commander",
   "start_url": "./index.html",
   "display": "standalone",
   "theme_color": "#000000",
