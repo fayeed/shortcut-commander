@@ -1,5 +1,5 @@
 import { Command, Option, UpdateCommand } from "./types";
-import { useEffect, useRef, MutableRefObject, useState } from "react";
+import { useEffect, MutableRefObject, useState } from "react";
 import { matchCommand, getShortcut } from "./utils";
 
 let commandSet = new Map<string, Command>();
@@ -10,16 +10,27 @@ let dontRepeat = false;
 
 let globalListenerRegistered = false;
 
-let changeFunc: any;
+let removeTimeout: NodeJS.Timeout;
+
+const commandChangeFuncs = new Set<any>();
 
 let longPressFunc: NodeJS.Timeout;
 
 function callbackFunc(e: KeyboardEvent, value: Command) {
-  changeFunc(value);
+  if (!value.scopedTo || (e.target as HTMLElement).tagName === value.scopedTo) {
+    clearTimeout(removeTimeout);
 
-  setTimeout(() => changeFunc(undefined), value.delay ?? 1000);
+    for (const setCommand of commandChangeFuncs) {
+      setCommand(value);
 
-  value.callback(e);
+      removeTimeout = setTimeout(
+        () => setCommand(undefined),
+        value.delay ?? 1000
+      );
+    }
+
+    value.callback(e);
+  }
 
   if (value.once) {
     commandSet.delete(value.name);
@@ -38,7 +49,10 @@ const keyDownListener = (e: KeyboardEvent) => {
         if (!longPress) {
           longPress = true;
 
-          longPressFunc = setTimeout(() => callbackFunc(e, value), 500);
+          longPressFunc = setTimeout(
+            () => callbackFunc(e, value),
+            value.longPressWaitTime ?? 500
+          );
         }
       } else {
         if (value.dontRepeat) {
@@ -78,10 +92,8 @@ export const useCommander = (
 ) => {
   const [command, setCommand] = useState<Command>();
 
-  const innerRef = useRef<HTMLElement>();
-
   useEffect(() => {
-    changeFunc = setCommand;
+    commandChangeFuncs.add(setCommand);
 
     if (commands) {
       for (const command of commands) {
@@ -90,6 +102,11 @@ export const useCommander = (
           ...option,
           global: !ref?.current ? true : false,
           registerTime: new Date(),
+          scopedTo: ["INPUT", "TEXTAREA", "SELECT"].includes(
+            ref?.current?.tagName
+          )
+            ? ref?.current?.tagName
+            : undefined,
         });
       }
     }
@@ -101,8 +118,8 @@ export const useCommander = (
      * set and then only set it.
      */
     if (ref?.current) {
-      ref?.current.addEventListener("keydown", keyDownListener);
-      ref?.current.addEventListener("keyup", keyUpListener);
+      ref.current?.addEventListener("keydown", keyDownListener);
+      ref.current?.addEventListener("keyup", keyUpListener);
     } else if (!globalListenerRegistered) {
       globalListenerRegistered = true;
       document.body.addEventListener("keydown", keyDownListener);
@@ -115,11 +132,13 @@ export const useCommander = (
         commandSet.delete(command.name);
       }
 
+      commandChangeFuncs.delete(setCommand);
+
       // If the ref was provided remove listener too.
       // If the commandSet down to 0 remove teh global listener too.
       if (ref?.current) {
-        innerRef.current?.removeEventListener("keydown", keyDownListener);
-        innerRef.current?.removeEventListener("keyup", keyUpListener);
+        ref.current?.removeEventListener("keydown", keyDownListener);
+        ref.current?.removeEventListener("keyup", keyUpListener);
       } else if (globalListenerRegistered && commandSet.size === 0) {
         document.body.removeEventListener("keydown", keyDownListener);
         document.body.removeEventListener("keyup", keyUpListener);

@@ -28,6 +28,7 @@ export interface Command extends Option {
   stopped?: boolean; // done
   delay?: number;
   ref?: HTMLElement; // done
+  scopedTo?: string;
 }
 
 export interface UpdateCommand extends Option {
@@ -51,4 +52,5 @@ export interface Option {
   onRelease?: boolean;
   dontRepeat?: boolean; // done
   stopBubblingUp?: boolean; // done
+  longPressWaitTime?: number; // done
 }
