@@ -8,7 +8,7 @@ export interface ButtonCommanderReturnType {
   once: (command: Command) => void;
   longPress: (command: Command) => void;
   getAll: () => Array<Command>;
-  command?: string[];
+  command?: Command;
 }
 
 export interface Command extends Option {

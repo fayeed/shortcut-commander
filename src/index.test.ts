@@ -1,12 +1,12 @@
-import { useMyHook } from './'
+import { useCommander } from "./";
 import { renderHook, act } from "@testing-library/react-hooks";
 
 // mock timer using jest
 jest.useFakeTimers();
 
-describe('useMyHook', () => {
-  it('updates every second', () => {
-    const { result } = renderHook(() => useMyHook());
+describe("useCommander", () => {
+  it("updates every second", () => {
+    const { result } = renderHook(() => useCommander());
 
     expect(result.current).toBe(0);
 
@@ -25,5 +25,5 @@ describe('useMyHook', () => {
 
     // Check after total 2 sec
     expect(result.current).toBe(2);
-  })
-})
+  });
+});

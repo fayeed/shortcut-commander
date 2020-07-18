@@ -201,7 +201,7 @@ export const useCommander = (
     remove,
     clearAll,
     add,
-    command: command ? getShortcut(command?.shortcut) : undefined,
+    command,
     once,
     longPress,
   };
