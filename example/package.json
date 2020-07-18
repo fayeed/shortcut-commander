@@ -1,6 +1,6 @@
 {
-  "name": "button-commander-example",
-  "homepage": "https://fayeed.github.io/button-commander",
+  "name": "shortcut-commander-example",
+  "homepage": "",
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
@@ -8,7 +8,7 @@
     "react": "file:../node_modules/react",
     "react-dom": "^16.9.0",
     "react-scripts": "^3.0.1",
-    "button-commander": "file:.."
+    "shortcut-commander": "file:.."
   },
   "scripts": {
     "start": "react-scripts start",
@@ -21,5 +21,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/react-dom": "^16.9.8"
+  }
 }
