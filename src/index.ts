@@ -103,8 +103,6 @@ export const useCommander = (
     if (commands) {
       for (const command of commands) {
         commandSet.set(command.name, {
-          ...command,
-          ...option,
           global: !ref?.current ? true : false,
           registerTime: new Date(),
           scopedTo: ["INPUT", "TEXTAREA", "SELECT"].includes(
@@ -112,6 +110,9 @@ export const useCommander = (
           )
             ? ref?.current?.tagName
             : undefined,
+          readOnly: false,
+          ...command,
+          ...option,
         });
       }
     }
@@ -160,16 +161,15 @@ export const useCommander = (
     commandSet.set(name, { ...commandSet.get(name)!, stopped: false });
 
   const update = (name: string, options: UpdateCommand) => {
-    if (commandSet.has(name)) {
-      if (!commandSet.get(name)?.readOnly) {
-        commandSet.set(name, { ...commandSet.get(name)!, ...options });
+    const command = commandSet.get(name);
+    if (command) {
+      if (!command.readOnly) {
+        commandSet.set(name, { ...command, ...options });
       } else {
-        throw new Error(
-          "Shortcut you are trying to modify is set to readOnly."
-        );
+        throw Error("Shortcut you are trying to modify is set to readOnly.");
       }
     } else {
-      throw new Error("Shortcut that you are trying to update does not exist.");
+      throw Error("Shortcut that you are trying to update does not exist.");
     }
   };
 
