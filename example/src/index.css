@@ -42,6 +42,11 @@ body {
   font-size: 36px;
 }
 
+.shortcutContainer > div {
+  display: flex;
+  align-items: center;
+}
+
 .key {
   padding: 8px 20px;
   border-radius: 4px;
@@ -59,6 +64,7 @@ body {
   border-radius: 4px;
   padding: 30px 20px;
   box-shadow: 0 15px 20px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgb(100, 100, 100);
 }
 
 .command {
@@ -90,12 +96,21 @@ body {
   height: 30px;
 }
 
+.commandKey > div {
+  display: flex;
+  align-items: center;
+}
+
 .commandNewContainer {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 0.5px solid rgb(90, 90, 90);
 }
 
 .commandNewContainer:last-child {
   margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .commandNewContainer button {
@@ -112,12 +127,12 @@ body {
   background-color: #202020;
 }
 
-.commandKey span {
-  margin: 8px;
+.commandKey > div > span {
+  margin: 0 4px;
   color: white;
 }
 
-.commandKey div {
-  padding: 6px 12px;
-  font-size: 14px;
+.commandKey > div > div {
+  padding: 4px 10px;
+  font-size: 12px;
 }

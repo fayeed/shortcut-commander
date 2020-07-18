@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { useCommander } from "shortcut-commander";
 import { getShortcut } from "./utils";
 import { Command } from "../../dist/types";
@@ -13,20 +12,24 @@ const App = () => {
     [
       {
         name: "Green Color",
-        shortcut: { windows: ["ctrl", "space"], macOS: ["meta", "z"] },
+        shortcut: {
+          windows: ["shift", "ctrl", "z"],
+          macOS: ["shift", "meta", "z"],
+        },
         description: "Change background color to green",
         callback: () => (document.body.style.background = "#64C964"),
         stopBubblingUp: true,
       },
       {
         name: "Yellow Color",
-        shortcut: ["meta", "c"],
+        shortcut: { windows: ["ctrl", "x"], macOS: ["meta", "x"] },
         description: "Change background color to yellow",
         callback: () => (document.body.style.background = "#fdd231"),
+        readOnly: true,
       },
       {
         name: "Red Color",
-        shortcut: ["meta", "x"],
+        shortcut: { windows: ["ctrl", "c"], macOS: ["meta", "c"] },
         description: "Change background color to red",
         callback: () => (document.body.style.background = "#FF614D"),
       },
@@ -36,7 +39,7 @@ const App = () => {
 
   useEffect(() => {
     console.log("command: ", command);
-  }, [command, getAll]);
+  }, [command]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -49,7 +52,7 @@ const App = () => {
       <Icon width={120} height={120} fill="#121212" />
       <div className="title">
         <div>Shortcut Commander</div>
-        <a href="https://github.com/fayeed/button-commander">
+        <a href="https://github.com/fayeed/shortcut-commander" target="_blank">
           <GithubIcon />
         </a>
       </div>
@@ -58,7 +61,7 @@ const App = () => {
           Commands
         </div>
         {commands.map((command) => (
-          <div className="commandNewContainer">
+          <div key={command.name} className="commandNewContainer">
             <div className="command">
               <div>
                 <span>{command.name}</span>
@@ -66,12 +69,12 @@ const App = () => {
               </div>
               <div className="commandKey">
                 {getShortcut(command.shortcut).map((btn, i) => (
-                  <>
+                  <div key={`c-${btn}-${i}`}>
                     <span>{i === 0 ? null : "+"}</span>
                     <div className="key key-new" key={btn}>
                       {btn}
                     </div>
-                  </>
+                  </div>
                 ))}
               </div>
             </div>
@@ -84,12 +87,13 @@ const App = () => {
       </div>
 
       <div className="shortcutContainer">
-        {command?.map((btn, i) => (
-          <>
-            {i === 0 ? null : <span>+</span>}
-            <div className="key">{btn}</div>
-          </>
-        ))}
+        {command &&
+          getShortcut(command?.shortcut)?.map((btn, i) => (
+            <div key={`${btn}-${i}`}>
+              {i === 0 ? null : <span>+</span>}
+              <div className="key">{btn}</div>
+            </div>
+          ))}
       </div>
     </div>
   );
