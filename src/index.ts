@@ -4,7 +4,7 @@ import {
   UpdateCommand,
   ButtonCommanderReturnType,
 } from "./types";
-import { useEffect, MutableRefObject, useState } from "react";
+import { useEffect, MutableRefObject, useState, useCallback } from "react";
 import { matchCommand, getShortcut } from "./utils";
 
 let commandSet = new Map<string, Command>();
@@ -152,15 +152,21 @@ export const useCommander = (
     };
   }, []);
 
-  const getAll = () => Array.from(commandSet.values());
+  const getAll = useCallback(() => Array.from(commandSet.values()), []);
 
-  const stop = (name: string) =>
-    commandSet.set(name, { ...commandSet.get(name)!, stopped: true });
+  const stop = useCallback(
+    (name: string) =>
+      commandSet.set(name, { ...commandSet.get(name)!, stopped: true }),
+    []
+  );
 
-  const start = (name: string) =>
-    commandSet.set(name, { ...commandSet.get(name)!, stopped: false });
+  const start = useCallback(
+    (name: string) =>
+      commandSet.set(name, { ...commandSet.get(name)!, stopped: false }),
+    []
+  );
 
-  const update = (name: string, options: UpdateCommand) => {
+  const update = useCallback((name: string, options: UpdateCommand) => {
     const command = commandSet.get(name);
     if (command) {
       if (!command.readOnly) {
@@ -171,27 +177,27 @@ export const useCommander = (
     } else {
       throw Error("Shortcut that you are trying to update does not exist.");
     }
-  };
+  }, []);
 
-  const remove = (name: string) => commandSet.delete(name);
+  const remove = useCallback((name: string) => commandSet.delete(name), []);
 
   const clearAll = () => commandSet.clear();
 
-  const add = (command: Command) => {
+  const add = useCallback((command: Command) => {
     if (!commandSet.has(command.name)) {
       commandSet.set(command.name, command);
     } else {
       throw new Error("Shortcut with the same name already exist.");
     }
-  };
+  }, []);
 
-  const once = (command: Command) => {
+  const once = useCallback((command: Command) => {
     commandSet.set(command.name, { ...command, once: true });
-  };
+  }, []);
 
-  const longPress = (command: Command) => {
+  const longPress = useCallback((command: Command) => {
     commandSet.set(command.name, { ...command, longPress: true });
-  };
+  }, []);
 
   return {
     getAll,
